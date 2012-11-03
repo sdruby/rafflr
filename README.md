@@ -1,4 +1,4 @@
-# Rafflr is a highly sophisticated, online version of eeny, meeny, miny, moe.
+## Rafflr is a highly sophisticated, online version of eeny, meeny, miny, moe.
 
 ### How to Install
 
