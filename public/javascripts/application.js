@@ -1,7 +1,7 @@
 var nextRoundDelayMs = 1500;
 var nextRoundTimerDelayMs = 1;
 /* Either drop out a user or declare a winner; next_round is the function that gets the next user */
-function process(user_id, next_round, extra_user) { 
+function process(user_id, next_round, extra_user) {
   var users = $$('.users');
   var user = $('user_'+user_id);
   Element.removeClassName(user, 'users');
@@ -24,18 +24,18 @@ function process(user_id, next_round, extra_user) {
     dropout(user, next_round);
   }
 }
-  
+
 /**
  * Remove a l0z3r and kick off the next round after all the effects are done.
  */
 function dropout(element, next_round) {
 
-  /* 
+  /*
    * Things jump around too much if you put an effect directly on the original so make
    * a copy of it and leave the original hidden, but still displaying, i.e. taking up space.
    */
   var ghost = clone_and_hide(element);
-  
+
   /* Drop out with some random pizazz */
   new Effect.Parallel(
     [
@@ -43,17 +43,17 @@ function dropout(element, next_round) {
       new Effect.Highlight($$('#ghost div')[0]),
       dropout_effects[Math.floor(Math.random()*dropout_effects.length)](ghost)
     ].flatten(),
-    { 
-      afterFinish: function(effect) { 
+    {
+      afterFinish: function(effect) {
       	// Even though the effects are supposed to be done here, it looks better to wait a second before
       	// cleaning up and letting the remaining divs float left again.
-          setTimeout(function() { 
+          setTimeout(function() {
             // Kick off the next round
             if (next_round) {
               setTimeout(next_round, nextRoundDelayMs);
             }
-            Element.hide(element); 
-            Element.remove('ghost'); 
+            Element.hide(element);
+            Element.remove('ghost');
           }, nextRoundTimerDelayMs); }
     });
 }
@@ -73,12 +73,12 @@ function clone_and_hide(element) {
   ghost.style.left = (left - parseFloat(Element.getStyle(element,'margin-left'))) + 'px';
   Element.setStyle(element, {'visibility':'hidden'});
   element.parentNode.insertBefore(ghost, element);
-  
+
   return ghost;
 }
 
 /* To add additional drop out effects just put another function on this array */
-var dropout_effects = 
+var dropout_effects =
 	[
 	  function(element) {
 	  	return [
@@ -100,9 +100,9 @@ var dropout_effects =
     }
 	];
 
-  
+
 function declare_winners() {
-  center_winners();
+  // center_winners();
   start_user_effects();
   start_page_effects();
 }
@@ -126,8 +126,8 @@ function center_winners() {
 
 // Do crazy stuff to the winners, for now pulse for about 6 seconds
 function start_user_effects() {
-  setTimeout(function() { 
-    $$('.users').each(function(user) { 
+  setTimeout(function() {
+    $$('.users').each(function(user) {
       // Queue more effects here if it's not over the top enough already
       new Effect.Pulsate(user, { duration: 10, pulses: 20, queue: { position: 'end', scope: user.id } });
     });
@@ -149,23 +149,23 @@ function start_page_effects() {
 }
 
 function stop_page_effects() {
-	setTimeout(function() { 
+	setTimeout(function() {
     new Effect.Morph(document.body, { style: { background: '#fff'}, duration: 2}); // Daybreak
-    stopMusic(); 
+    stopMusic();
     if ($('new_raffle')) {
       Element.show('new_raffle');
     }
-  }, 2000);  
+  }, 2000);
 }
 
 
 /* For testing effects - this will randomly select losers without hitting the server */
-function process_client_side() { 
+function process_client_side() {
   var users = $$('.users');
   var rand = Math.floor(Math.random()*users.length);
   var user = users[rand];
   Element.removeClassName(user, 'users');
-  
+
   if (users.length-1 == parseInt($('number_of_winners').value)) {
     dropout(user, declare_winners, 1000);
   } else {
@@ -185,7 +185,7 @@ function stopMusic() {
 }
 
 function fadeSong(count) {
-	soundManager.setVolume('song', count*10); 
+	soundManager.setVolume('song', count*10);
 	if (count-- <= 0) {
       soundManager.stop('song');
   } else {
