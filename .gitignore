@@ -1,5 +1,8 @@
-log/**/*
-tmp/**/*
-db/schema.rb
 .loadpath
 .project
+.rbenv-version
+.rvmrc
+db/schema.rb
+log/
+log/**/*
+tmp/**/*
